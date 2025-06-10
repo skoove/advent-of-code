@@ -11,20 +11,9 @@ fn main() {
     };
 
     let mut floor: i32 = 0;
-    let mut santa_entered_basement: bool = false;
 
-    for (position, char) in input.chars().enumerate() {
+    for char in input.chars() {
         floor += up_or_down(char);
-        if santa_entered_basement {
-            continue;
-        }
-        if floor == -1 {
-            println!(
-                "Santa first enters the basement at position {}",
-                position + 1
-            );
-            santa_entered_basement = true;
-        }
     }
 
     println!("The correct floor is: {floor}");
