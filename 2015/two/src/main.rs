@@ -16,5 +16,8 @@ fn main() {
     }
 
     let paper_needed = presents.iter().map(|x| x.paper_needed()).sum::<u32>();
-    println!("paper needed: {} sq ft", paper_needed)
+    let ribbon_needed = presents.iter().map(|x| x.ribbon_needed()).sum::<u32>();
+
+    println!("paper needed: {} sq ft", paper_needed);
+    println!("ribbon needed: {} ft", ribbon_needed);
 }
