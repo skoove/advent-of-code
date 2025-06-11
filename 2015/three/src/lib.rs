@@ -8,7 +8,8 @@ pub struct Position {
 
 #[derive(Debug)]
 pub struct Santa {
-    pub position: Position,
+    pub santa_position: Position,
+    pub robo_santa_position: Position,
     pub houses: HashMap<Position, u32>,
 }
 
@@ -22,13 +23,13 @@ pub enum MoveDirection {
 impl Santa {
     pub fn move_in_direction(&mut self, direction: MoveDirection) {
         match direction {
-            MoveDirection::Up => self.position.y += 1,
-            MoveDirection::Down => self.position.y -= 1,
-            MoveDirection::Left => self.position.x -= 1,
-            MoveDirection::Right => self.position.x += 1,
+            MoveDirection::Up => self.santa_position.y += 1,
+            MoveDirection::Down => self.santa_position.y -= 1,
+            MoveDirection::Left => self.santa_position.x -= 1,
+            MoveDirection::Right => self.santa_position.x += 1,
         };
 
-        self.add_visit_to_house(self.position);
+        self.add_visit_to_house(self.santa_position);
     }
 
     pub fn add_visit_to_house(&mut self, position: Position) {
@@ -64,12 +65,29 @@ impl Santa {
 impl Default for Santa {
     fn default() -> Self {
         let mut santa = Santa {
-            position: Position::default(),
+            santa_position: Position::default(),
+            robo_santa_position: Position::default(),
             houses: HashMap::new(),
         };
 
-        santa.houses.insert(santa.position, 1);
+        santa.houses.insert(santa.santa_position, 1);
 
         santa
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::Santa;
+
+    #[test]
+    fn single_move() {
+        let santa = Santa::new_from_directions(">".into());
+
+        assert_eq!(santa.houses.len(), 2);
+
+        for (_, visits) in santa.houses {
+            assert_eq!(visits, 1)
+        }
     }
 }
