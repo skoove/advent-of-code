@@ -21,7 +21,7 @@ pub enum MoveDirection {
 }
 
 impl Santa {
-    pub fn move_in_direction(&mut self, direction: MoveDirection) {
+    pub fn move_normal_santa_in_direction(&mut self, direction: MoveDirection) {
         match direction {
             MoveDirection::Up => self.santa_position.y += 1,
             MoveDirection::Down => self.santa_position.y -= 1,
@@ -30,6 +30,17 @@ impl Santa {
         };
 
         self.add_visit_to_house(self.santa_position);
+    }
+
+    pub fn move_robo_santa_in_direction(&mut self, direction: MoveDirection) {
+        match direction {
+            MoveDirection::Up => self.robo_santa_position.y += 1,
+            MoveDirection::Down => self.robo_santa_position.y -= 1,
+            MoveDirection::Left => self.robo_santa_position.x -= 1,
+            MoveDirection::Right => self.robo_santa_position.x += 1,
+        };
+
+        self.add_visit_to_house(self.robo_santa_position);
     }
 
     pub fn add_visit_to_house(&mut self, position: Position) {
@@ -54,8 +65,15 @@ impl Santa {
 
         let mut santa = Santa::default();
 
+        let mut santa_moved = false;
         for direction in directions_parsed {
-            santa.move_in_direction(direction);
+            if santa_moved == false {
+                santa.move_normal_santa_in_direction(direction);
+                santa_moved = true;
+            } else {
+                santa.move_robo_santa_in_direction(direction);
+                santa_moved = false;
+            }
         }
 
         santa
